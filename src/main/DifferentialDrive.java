@@ -1,112 +1,168 @@
 package main;
 
-
-//import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
-//import lejos.robotics.navigation.Navigator;
+import lejos.utility.Delay;
 
 public class DifferentialDrive {
-    private Chassis chassis;
-    private Wheel wheelleft;
-    private Wheel wheelright;
-    public MovePilot pilot;
-    
-    
-    //DifferentialDrive d=new DifferentialDrive(Config.LEFTWHEELPORT,Config.RIGHTWHEELPORT);
-    
-    //private final static int SPEED = (int) Config.SPEEDROTATE;
 
+    /**
+     * Delta of angle.
+     */
+    private static final float DELTA = -10/360;
+	
+    private VisionSensor vision;//pour ne pas rentrer dans les murs/robots
+    private MovePilot pilot;
+    
 
-    public DifferentialDrive(Port left_port, Port right_port)
-    {
-    	
-    	wheelleft = WheeledChassis.modelWheel(new EV3LargeRegulatedMotor(left_port),
-				Config.WHEEL_DIAMETER).offset(-1*Config.DISTANCE_TO_CENTER);
-		wheelright = WheeledChassis.modelWheel(new EV3LargeRegulatedMotor(right_port),
-				Config.WHEEL_DIAMETER).offset(Config.DISTANCE_TO_CENTER);
-		chassis = new WheeledChassis(new Wheel[]{wheelleft, wheelright},
+    public DifferentialDrive(Port left_port, Port right_port){
+    	Wheel wheelleft = WheeledChassis.modelWheel(new EV3LargeRegulatedMotor(left_port),
+				Config.LEFT_WHEEL_DIAMETER).offset(-1*Config.DISTANCE_TO_CENTER);
+		Wheel wheelright = WheeledChassis.modelWheel(new EV3LargeRegulatedMotor(right_port),
+				Config.RIGHT_WHEEL_DIAMETER).offset(Config.DISTANCE_TO_CENTER);
+		Chassis chassis = new WheeledChassis(new Wheel[]{wheelleft, wheelright},
 				WheeledChassis.TYPE_DIFFERENTIAL);
 		pilot = new MovePilot(chassis);
 		//pilot.addMoveListener(this);
 		pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
 		pilot.setLinearSpeed(Config.LINEAR_SPEED);
 		pilot.setAngularSpeed(Config.ANGULAR_SPEED);
-		pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);
-		
-		
-		
-		
-		
-        /*mLeftMotor = new EV3LargeRegulatedMotor(left_port);
-        mRightMotor = new EV3LargeRegulatedMotor(right_port);
-        wheelleft= WheeledChassis.modelWheel(mLeftMotor, 5.1).offset(13.5).invert(true);  //diamètre roue:5,1
-        //.offset().invert()
-        wheelright=WheeledChassis.modelWheel(mRightMotor, 5.1).offset(13.5).invert(true);  //diamètre roue:5,1
-        chassis = new WheeledChassis(new Wheel[] {wheelright, wheelleft}, WheeledChassis.TYPE_DIFFERENTIAL);
-        pilot = new MovePilot(chassis);
-        pilot.setLinearSpeed(Config.SPEEDROTATE);
-        pilot.setAngularSpeed(50);
-        navigator = new Navigator(pilot);*/
-        
-    }
-
-
-    /*public void forward()
-    {
-        mLeftMotor.forward();
-        mRightMotor.forward();
-    }
-
-
-    public void stop()
-    {
-        mLeftMotor.stop();
-        mRightMotor.stop();
-    }
-
-
-    public void rotateClockwise()
-    {
-        mLeftMotor.forward();
-        mRightMotor.backward();
-    }
-
-
-    public void rotateCounterClockwise()
-    {
-        mLeftMotor.backward();
-        mRightMotor.forward();
+		pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
+		vision= new VisionSensor();
+    }  
+    
+    /**
+     * Avance jusqu'à rencontrer un obstacle ou un palet
+     * Renvoie vrai si les pinces detectent un palet, faux si l'arret est dû à un obstacle
+     */
+    public boolean GoUntilTouch(TouchSensor touchsensor){
+    	if(vision.getRaw()[0]>=20){
+    		while(!touchsensor.isPressed()&&vision.getRaw()[0]>=20){
+    			pilot.travel(20);
+    		}
+    	}else{
+    		System.out.println("obstacle detecté!");
+    		Delay.msDelay(1000);
+    	}
+    	return touchsensor.isPressed();
     }
     
-    /////////////////////////////////////////////////////////////////////
-    public void forward(final double range){
-    	for(int i=0;i<range;i++){//ATTENTION PROBLEMES ralentissement?
-			d.forward();
-			//Delay.msDelay(1000);
-        }
-    	//Thread.yield();    	
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
+     * Se déplace (sans détour) jusqu'au noeud devant lui 
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudHaut(){
+    	pilot.travel(60);
     }
     
-    void backward(final double range) {
-        forward(-range);
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
+     * Se déplace (sans détour) jusqu'au noeud derrière lui (sans effectuer de rotations)
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudBas(){
+    	pilot.travel(-60);
     }
     
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
+     * Se déplace (sans détour) jusqu'au noeud à sa gauche 
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudGauche(){
+    	turnLeft(90);
+    	pilot.travel(50);
+    	turnRight(90);
+    }
+    
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
+     * Se déplace (sans détour) jusqu'au noeud à sa droite
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudDroite(){
+    	turnRight(90);
+    	pilot.travel(50);
+    	turnLeft(90);
+    }
+    
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable 
+     * et il n'y a pas d'obstacle sur le noeud haut
+     * Se déplace comme si il suivait les lignes jusqu'au noeud en haut à gauche
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudHautGauche(){
+    	GoNoeudHaut();
+    	GoNoeudGauche();
+    }
+    
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable 
+     * et il n'y a pas d'obstacle sur le noeud haut
+     * Se déplace comme si il suivait les lignes jusqu'au noeud en haut à droite
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudHautDroite(){
+    	GoNoeudHaut();
+    	GoNoeudDroite();
+    }
+    
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable 
+     * et il n'y a pas d'obstacle sur le noeud bas
+     * Se déplace comme si il suivait les lignes jusqu'au noeud en bas à droite
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudBasDroite(){
+    	GoNoeudBas();
+    	GoNoeudDroite();
+    }
+    
+    /**
+     * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable 
+     * et il n'y a pas d'obstacle sur le noeud bas
+     * Se déplace comme si il suivait les lignes jusqu'au noeud en bas à droite
+     * Postcond: robot orienté parallèlement à la table, cible atteinte
+     */
+    public void GoNoeudBasGauche(){
+    	GoNoeudBas();
+    	GoNoeudGauche();
+    }
+    
+    
+    /**
+     * Turn left of an angle given.
+     * @param angle : float angle
+     */
     void turnLeft(final int angle) {
-    	
-    	Thread.yield();
+        float ang;
+        if (angle >= 0) {
+            ang = angle + DELTA*angle;
+        } else {
+            ang = angle - DELTA*angle;
+        }
+        pilot.rotate(Math.round(ang));
+    	//pilot.rotate(angle);
     }
-    
+
+    /**
+     * Turn right of an angle given.
+     * @param angle : float angle
+     */
     void turnRight(final int angle) {
         turnLeft(-angle);
-    }*/
+    }
     
-    
-    
+    MovePilot getpilot(){
+    	return pilot;
+    }
+
     
 }
 
