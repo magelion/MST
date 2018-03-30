@@ -1,25 +1,104 @@
 package main;
-/*Notes
- * Rotate:
- * demi-tour= i=1510;tour SPEEDROTATE = 300.0;
- * ATTENTION LATENCE!*/
+
+import lejos.hardware.Button;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.utility.Delay;
 
 
 public class Main {
 
 	public static void main(String args[]) {
+		testCouleur();	
+		//testOdometrie();
+	}
+
+	public static void testCouleur(){
+		Couleur c=new Couleur(1);
+		System.out.println("Press enter to test blue...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isBlue()){
+			System.out.println("Bleu");
+		}
+		Delay.msDelay(2000);
 		
-		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, 
-												Config.RIGHTWHEELPORT);
+		System.out.println("Press enter to test black...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isBlack()){
+			System.out.println("Noir");
+		}
+		Delay.msDelay(2000);
+		
+		System.out.println("Press enter to test green...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isGreen()){
+			System.out.println("Vert");
+		}
+		Delay.msDelay(2000);
+			
+		System.out.println("Press enter to test red...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isRed()){
+			System.out.println("Rouge");
+		}
+		Delay.msDelay(2000);
+			
+		
+		System.out.println("Press enter to test white...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isWhite()){
+			System.out.println("Blanc");
+		}
+		Delay.msDelay(2000);
+			
+		System.out.println("Press enter to test yellow...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isYellow()){
+			System.out.println("Jaune");
+		}
+		Delay.msDelay(2000);
+	}
+		
+	public static void testOdometrie(){
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
+		OdometryPoseProvider o= new OdometryPoseProvider (d.getpilot());
+		System.out.println("Position Init="+o.getPose());//x,y et orientation
+		Delay.msDelay(2000);
+		d.getpilot().rotate(180);
+		d.getpilot().travel(100);
+		System.out.println("Position Init="+o.getPose());//x,y et orientation
+		Delay.msDelay(5000);
+	}
+		
+		/*ColorDetection c= new ColorDetection();
+		Color couleur;
+		while(true){
+			couleur =c.cAdapt.getColor();
+			System.out.println("Niveau de bleu="+couleur.getBlue());
+			System.out.println("Niveau de rouge="+couleur.getRed());
+			System.out.println("Niveau de vert="+couleur.getGreen());
+			Delay.msDelay(2000);
+		}*/
+		//c.end();
+		/*switch (couleur){
+		case 0:
+			System.out.println("");
+			Delay.msDelay(1000);
+			break;
+		}*/
+		
+		
+		//DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
 		
 		/*d.pilot.forward();
 		Delay.msDelay(1000);
 		d.pilot.stop();*/
-		d.pilot.travel(100);
-		System.out.println("COUCOU");
-		Delay.msDelay(10000);
-		d.pilot.stop();
+		//d.pilot.travel(200);
+		//System.out.println("COUCOU");
+		//Delay.msDelay(10000);
+		//d.pilot.stop();
+		//d.pilot.rotate(360);
+		//d.pilot.travel(100);
+		
 		
 		
 		//DifferentialDrive d=new DifferentialDrive(Config.LEFTWHEELPORT,Config.RIGHTWHEELPORT);
@@ -72,6 +151,5 @@ public class Main {
         	p.close();
         }
 		//p.close();*/
-	}
-	
 }
+	

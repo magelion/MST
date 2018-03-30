@@ -47,7 +47,7 @@ public class main {
 
 		
 		
-		final HSP clamidia = new HSP();
+		final Ourplaner clamidia = new Ourplaner();
 		//Parser parse = new Parser();
 		
  

@@ -9,13 +9,23 @@ import lejos.hardware.port.Port;
  */
 final class Config {
 
-	public static final float WHEEL_DIAMETER        = 5.5f;//cm
-	public static final float DISTANCE_TO_CENTER    = 6.5f;//cm
-	public static final float LINEAR_ACCELERATION   = 0.5f;
-	public static final float LINEAR_SPEED			= 100; //cm/sec //150
-	public static final float ANGULAR_ACCELERATION  = 0.5f;
-	public static final float ANGULAR_SPEED			= 70; //cm/sec //70
-	public static final int   MAX_ROTATION_SPEED    = 70;
+	/**Pour DiffentialDrive (options de la classe MovePilot*/
+	//diamètre des roues différents pour corriger un décalage vers la gauche
+	public static final float LEFT_WHEEL_DIAMETER        = 5.49f;//cm
+	public static final float RIGHT_WHEEL_DIAMETER        = 5.5f;//cm
+	
+	public static final float DISTANCE_TO_CENTER    = 6.1f;//cm
+	
+	//Pour mouvements linéaires
+	public static final float LINEAR_ACCELERATION   = 12.0f;
+	public static final float LINEAR_SPEED			= 650.0f; //cm/sec 
+	
+	//Pour rotations
+	public static final float ANGULAR_ACCELERATION  = 12.0f;
+	public static final float ANGULAR_SPEED			= 650.0f; //cm/sec 
+	
+	public static final int   MAX_ROTATION_SPEED    = 800;
+	
     /**
      * Pliers port.
      */
@@ -49,22 +59,22 @@ final class Config {
     /**
      * True if the robot start to left.
      */
-    static final boolean ISLEFT = false;
+    //static final boolean ISLEFT = false;
     /** Variable define.
      * */
-    static final int LONGSIZEBLOC = 45;
+    //static final int LONGSIZEBLOC = 45;
 
     /** Variable define.
      * */
-    static final int HYPFIRST = 195;
+    //static final int HYPFIRST = 195;
 
     /** Variable define.
      * */
-    static final int RECUL = 20;
+    //static final int RECUL = 20;
 
     /** Variable define.
      * */
-    static final int DEMITOUR = 180;
+    //static final int DEMITOUR = 180;
 
     /** Speed rotate.
      * */
@@ -83,32 +93,13 @@ final class Config {
     /**
      * Nb step.
      */
-    static final int TIME = 3000;
+    //static final int TIME = 3000;
 
     /**
      * Rotation range for adjust pliers.
      */
-    static final int ADJUSTROTATEPLIERS = 300;
+    //static final int ADJUSTROTATEPLIERS = 300;
 
-    /**
-     * Led green color.
-     */
-    public static final int GREEN = 1;
-
-    /**
-     * Led red color.
-     */
-    public static final int RED = 2;
-
-    /**
-     * Led orange color.
-     */
-    public static final int ORANGE = 3;
-
-    /**
-     * Led none color.
-     */
-    public static final int NONE = -1;
 
      /** constructor.
      */
