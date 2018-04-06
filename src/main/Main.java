@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 import lejos.hardware.Button;
 import lejos.robotics.localization.OdometryPoseProvider;
@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String args[]) {
 		testCouleur();	
-		//testOdometrie();
+		testOdometrie();
 	}
 
 	public static void testCouleur(){
@@ -61,11 +61,11 @@ public class Main {
 	public static void testOdometrie(){
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
 		OdometryPoseProvider o= new OdometryPoseProvider (d.getpilot());
-		System.out.println("Position Init="+o.getPose());//x,y et orientation
+		System.out.println("Position Init="+o.getPose().getHeading());//orientation
 		Delay.msDelay(2000);
 		d.getpilot().rotate(180);
-		d.getpilot().travel(100);
-		System.out.println("Position Init="+o.getPose());//x,y et orientation
+		d.getpilot().rotate(90);
+		System.out.println("Position Init="+o.getPose().getHeading());//orientation
 		Delay.msDelay(5000);
 	}
 		

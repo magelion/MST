@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 import lejos.hardware.Button;
 import lejos.hardware.sensor.EV3ColorSensor;

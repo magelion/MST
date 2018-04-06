@@ -1,4 +1,4 @@
-package main;
+package src.main;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.RegulatedMotor;
@@ -16,7 +16,7 @@ class Pliers {
 	/**
 	 * True if is closed.
 	 */
-	private Boolean isClosed;
+	private boolean isClosed;
 
 	/**
 	 * Adjust angle of pliers.

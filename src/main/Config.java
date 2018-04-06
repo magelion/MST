@@ -1,11 +1,11 @@
-package main;
+package src.main;
 
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.Port;
 
 /**
- * Config contain many constant for ev3 port and constant for automata.
+ * Config contain many constant for ev3 port and constant for other class.
  */
 final class Config {
 
