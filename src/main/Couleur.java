@@ -11,12 +11,13 @@ public class Couleur {
 
 	private EV3ColorSensor colorSensor;
 	private SampleProvider average;
-	private static float[] path_white;
-	private static float[] path_blue;
-	private static float[] path_red;
-	private static float[] path_green;
-	private static float[] path_black;
-	private static float[] path_yellow;
+	private static float[] line_white;
+	private static float[] line_blue;
+	private static float[] line_red;
+	private static float[] line_green;
+	private static float[] line_black;
+	private static float[] line_yellow;
+	private static float[] grey_zone;
     private final static double ERROR = 0.01;
 	
     /**
@@ -33,19 +34,21 @@ public class Couleur {
 			
 			if(option==0){
 			//param = String de la couleur
-				path_green = calibrate("Green");
-				path_black = calibrate("Black");
-				path_blue = calibrate("Blue");
-				path_white = calibrate("White");
-				path_yellow = calibrate("Yellow");
-				path_red = calibrate("Red");
+				line_green = calibrate("Green");
+				line_black = calibrate("Black");
+				line_blue = calibrate("Blue");
+				line_white = calibrate("White");
+				line_yellow = calibrate("Yellow");
+				line_red = calibrate("Red");
+				grey_zone = calibrate("Grey");
 			}else{
-				path_green = calibrateAVG("Green");
-				path_black = calibrateAVG("Black");
-				path_blue = calibrateAVG("Blue");
-				path_white = calibrateAVG("Write");
-				path_yellow = calibrateAVG("Yellow");
-				path_red = calibrateAVG("Red");
+				line_green = calibrateAVG("Green");
+				line_black = calibrateAVG("Black");
+				line_blue = calibrateAVG("Blue");
+				line_white = calibrateAVG("Write");
+				line_yellow = calibrateAVG("Yellow");
+				line_red = calibrateAVG("Red");
+				grey_zone = calibrateAVG("Grey");
 			}
 
 		} catch (Throwable t) {
@@ -101,27 +104,31 @@ public class Couleur {
 
 	
 	boolean isBlue(){
-		return isThisColor(path_blue);
+		return isThisColor(line_blue);
 	}
 		
 	boolean isRed(){
-		return isThisColor(path_red);
+		return isThisColor(line_red);
 	}
 		
 	boolean isGreen(){
-		return isThisColor(path_green);
+		return isThisColor(line_green);
 	}
 		
 	boolean isBlack(){
-		return isThisColor(path_black);
+		return isThisColor(line_black);
 	}
 		
 	boolean isWhite(){
-		return isThisColor(path_white);
+		return isThisColor(line_white);
 	}
 		
 	boolean isYellow(){
-		return isThisColor(path_yellow);
+		return isThisColor(line_yellow);
+	}
+	
+	boolean isGrey(){
+		return isThisColor(grey_zone);
 	}
 	
 	private static double scalaire(float[] v1, float[] v2) {

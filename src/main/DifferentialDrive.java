@@ -6,7 +6,6 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
-import lejos.utility.Delay;
 
 public class DifferentialDrive {
 
@@ -14,8 +13,14 @@ public class DifferentialDrive {
      * Delta of angle.
      */
     private static final float DELTA = -10/360;
+    
+    /**
+     * Dimension table en cm.
+     */
+    private static final int LARG=50;
+    private static final int LONG=60;
 	
-    private VisionSensor vision;//pour ne pas rentrer dans les murs/robots
+    //private VisionSensor vision;//pour ne pas rentrer dans les murs/robots
     private MovePilot pilot;
     
 
@@ -32,14 +37,14 @@ public class DifferentialDrive {
 		pilot.setLinearSpeed(Config.LINEAR_SPEED);
 		pilot.setAngularSpeed(Config.ANGULAR_SPEED);
 		pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
-		vision= new VisionSensor();
+		//vision= new VisionSensor();
     }  
     
     /**
      * Avance jusqu'à rencontrer un obstacle ou un palet
      * Renvoie vrai si les pinces detectent un palet, faux si l'arret est dû à un obstacle
      */
-    public boolean GoUntilTouch(TouchSensor touchsensor){
+    /*public boolean GoUntilTouch(TouchSensor touchsensor){
     	if(vision.getRaw()[0]>=20){
     		while(!touchsensor.isPressed()&&vision.getRaw()[0]>=20){
     			pilot.travel(20);
@@ -49,6 +54,15 @@ public class DifferentialDrive {
     		Delay.msDelay(1000);
     	}
     	return touchsensor.isPressed();
+    }*/
+    
+    /**
+     * Avance jusqu'à rencontrer un obstacle ou un palet
+     */
+    public void GoUntilTouch(TouchSensor touchsensor){	
+    	while(!touchsensor.isPressed()){
+    		pilot.travel(20);
+    	}
     }
     
     /**
@@ -57,7 +71,7 @@ public class DifferentialDrive {
      * Postcond: robot orienté parallèlement à la table, cible atteinte
      */
     public void GoNoeudHaut(){
-    	pilot.travel(60);
+    	pilot.travel(LONG);
     }
     
     /**
@@ -66,7 +80,7 @@ public class DifferentialDrive {
      * Postcond: robot orienté parallèlement à la table, cible atteinte
      */
     public void GoNoeudBas(){
-    	pilot.travel(-60);
+    	pilot.travel(-LONG);
     }
     
     /**
@@ -76,7 +90,7 @@ public class DifferentialDrive {
      */
     public void GoNoeudGauche(){
     	turnLeft(90);
-    	pilot.travel(50);
+    	pilot.travel(LARG);
     	turnRight(90);
     }
     
@@ -87,7 +101,7 @@ public class DifferentialDrive {
      */
     public void GoNoeudDroite(){
     	turnRight(90);
-    	pilot.travel(50);
+    	pilot.travel(LARG);
     	turnLeft(90);
     }
     
@@ -137,10 +151,10 @@ public class DifferentialDrive {
     
     
     /**
-     * Turn left of an angle given.
+     * Turn right of an angle given.
      * @param angle : float angle
      */
-    void turnLeft(final int angle) {
+    void turnRight(final int angle) {
         float ang;
         if (angle >= 0) {
             ang = angle + DELTA*angle;
@@ -148,15 +162,14 @@ public class DifferentialDrive {
             ang = angle - DELTA*angle;
         }
         pilot.rotate(Math.round(ang));
-    	//pilot.rotate(angle);
     }
 
     /**
-     * Turn right of an angle given.
+     * Turn left of an angle given.
      * @param angle : float angle
      */
-    void turnRight(final int angle) {
-        turnLeft(-angle);
+    void turnLeft(final int angle) {
+        turnRight(-angle);
     }
     
     MovePilot getpilot(){
