@@ -8,8 +8,9 @@ import lejos.utility.Delay;
 public class Main {
 
 	public static void main(String args[]) {
-		testCouleur();	
-		testOdometrie();
+		//testCouleur();	
+		//testOdometrie();
+		testDeplacementNaif();
 	}
 
 	public static void testCouleur(){
@@ -56,6 +57,13 @@ public class Main {
 			System.out.println("Jaune");
 		}
 		Delay.msDelay(2000);
+		
+		System.out.println("Press enter to test grey...");
+		Button.ENTER.waitForPressAndRelease();
+		if(c.isGrey()){
+			System.out.println("Gris");
+		}
+		Delay.msDelay(2000);
 	}
 		
 	public static void testOdometrie(){
@@ -63,29 +71,20 @@ public class Main {
 		OdometryPoseProvider o= new OdometryPoseProvider (d.getpilot());
 		System.out.println("Position Init="+o.getPose().getHeading());//orientation
 		Delay.msDelay(2000);
-		d.getpilot().rotate(180);
-		d.getpilot().rotate(90);
+		d.turnLeft(180);
+		System.out.println("Position Init="+o.getPose().getHeading());//orientation
+		Delay.msDelay(2000);
+		d.turnLeft(90);
 		System.out.println("Position Init="+o.getPose().getHeading());//orientation
 		Delay.msDelay(5000);
 	}
 		
-		/*ColorDetection c= new ColorDetection();
-		Color couleur;
-		while(true){
-			couleur =c.cAdapt.getColor();
-			System.out.println("Niveau de bleu="+couleur.getBlue());
-			System.out.println("Niveau de rouge="+couleur.getRed());
-			System.out.println("Niveau de vert="+couleur.getGreen());
-			Delay.msDelay(2000);
-		}*/
-		//c.end();
-		/*switch (couleur){
-		case 0:
-			System.out.println("");
-			Delay.msDelay(1000);
-			break;
-		}*/
-		
+	public static void testDeplacementNaif(){
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
+		d.GoNoeudHaut();
+		d.GoNoeudBasDroite();
+		d.GoUntilTouch(new TouchSensor());
+	}
 		
 		//DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
 		
