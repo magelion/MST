@@ -1,4 +1,4 @@
-package src.main;
+package main;
 
 import lejos.hardware.Button;
 import lejos.robotics.localization.OdometryPoseProvider;
