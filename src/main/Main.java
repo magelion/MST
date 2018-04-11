@@ -11,7 +11,7 @@ public class Main {
 		//testCouleur();	
 		//testOdometrie();
 		//testDeplacementNaif();
-		//testFollowLine();
+		testFollowLine();
 	}
 	
 	public static void testFollowLine(){
@@ -23,7 +23,7 @@ public class Main {
 	}
 	
 	public static void testCouleur(){
-		Couleur c=new Couleur(1);
+		Couleur c=new Couleur(0);
 		System.out.println("Press enter to test blue...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isBlue()){

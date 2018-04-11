@@ -5,7 +5,6 @@ import lejos.hardware.port.Port;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
-import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.MovePilot;
 
 public class DifferentialDrive {
@@ -60,15 +59,13 @@ public class DifferentialDrive {
     		int compteur=3;
     		float[] couleurLigne=c.colorSample();
     		while(compteur!=0){
-	    		pilot.travel(1);
-	    		if(c.isGrey()){
+    	 		if(c.isGrey()){
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
 	    		}
-	    		while(c.isThisColor(couleurLigne)){
-	    			pilot.travel(1);
+    			while(c.isThisColor(couleurLigne)){
+	    			pilot.travel(2);
 	    		}
-	    		
     		}
     	}
     }
@@ -78,8 +75,25 @@ public class DifferentialDrive {
      * pas de retours pour définir réussite ou échec
      */
     private void recoverLine(Couleur c,float[] couleur){
-    	OdometryPoseProvider odo= new OdometryPoseProvider (getpilot());
-    	turnLeft(50);
+    	boolean inversionSens = false;
+    	for(int i = 1; !c.isThisColor(couleur) && i!=6;i++){
+    		if (inversionSens) {
+    			//turnRight(5*i);
+    			pilot.rotate(-5*i);
+    		}
+    		else {
+    			//turnLeft(5*i);
+    			pilot.rotate(5*i);
+    		}
+    		inversionSens = !inversionSens;
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*turnLeft(50);
     	int i=0;
     	while(!c.isThisColor(couleur) && i!=100){
     		turnRight(5);
@@ -88,7 +102,7 @@ public class DifferentialDrive {
     	//VERIFIER TURN LEFT OU RIGHT
     	if(i==100){
     		turnLeft(50);
-    	}
+    	}*/
     }
     
     
