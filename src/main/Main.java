@@ -1,4 +1,4 @@
-package src.main;
+package main;
 
 import lejos.hardware.Button;
 import lejos.robotics.localization.OdometryPoseProvider;
@@ -10,9 +10,18 @@ public class Main {
 	public static void main(String args[]) {
 		//testCouleur();	
 		//testOdometrie();
-		testDeplacementNaif();
+		//testDeplacementNaif();
+		//testFollowLine();
 	}
-
+	
+	public static void testFollowLine(){
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
+		Couleur c=new Couleur(1);
+		System.out.println("Place me in a line and press enter to test");
+		Button.ENTER.waitForPressAndRelease();
+		d.followLine(c);
+	}
+	
 	public static void testCouleur(){
 		Couleur c=new Couleur(1);
 		System.out.println("Press enter to test blue...");
@@ -85,70 +94,5 @@ public class Main {
 		d.GoNoeudBasDroite();
 		d.GoUntilTouch(new TouchSensor());
 	}
-		
-		//DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
-		
-		/*d.pilot.forward();
-		Delay.msDelay(1000);
-		d.pilot.stop();*/
-		//d.pilot.travel(200);
-		//System.out.println("COUCOU");
-		//Delay.msDelay(10000);
-		//d.pilot.stop();
-		//d.pilot.rotate(360);
-		//d.pilot.travel(100);
-		
-		
-		
-		//DifferentialDrive d=new DifferentialDrive(Config.LEFTWHEELPORT,Config.RIGHTWHEELPORT);
-		//Pliers p = new Pliers(20);
-		//TouchSensor t= new TouchSensor();
-		
-		
-		/*for(int i=0;i<150000;i++){//ATTENTION PROBLEMES ralentissement?
-			d.forward();
-		}
-		//System.out.println("Sortie for");
-		d.stop();//pas nécessaire
-		//Delay.msDelay(10000);*/
-		/*for(int t=0;t<6;t++){
-			for(int i=0;i<1500;i++){
-				d.rotateClockwise();
-			}
-			Delay.msDelay(1000);
-		}*/
-		
-		
-		
-		
-		
-        /*p.init();//pinces ouvertes par défaut
-        p.setClosed(true);
-        if(p.isClosed()){
-        	System.out.println("je vais ouvrir");
-        p.open();
-        }else{
-        	System.out.println("je ne veux pas ouvrir");
-        }
-		
-		while(!t.isPressed()){}
-		if(!p.isClosed()){
-			p.close();
-		}
-		p.init();//pinces ouvertes par défaut
-        p.setClosed(true);*/
-        
-        
-		
-        /*Pliers p = new Pliers(20);
-        p.init();
-        p.open();
-        if(p.isClosed()){
-        	p.open();
-        }
-        if(!p.isClosed()){
-        	p.close();
-        }
-		//p.close();*/
 }
 	

@@ -96,6 +96,13 @@ public class Couleur {
 		return res;
 	}
 	
+	float[] colorSample(){
+		float[] sample = new float[average.sampleSize()];
+		average.fetchSample(sample, 0);
+		return sample;
+	}
+	
+	
 	boolean isThisColor(float[] path){
 		float[] sample = new float[average.sampleSize()];
 		average.fetchSample(sample, 0);

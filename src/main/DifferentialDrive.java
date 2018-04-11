@@ -5,6 +5,7 @@ import lejos.hardware.port.Port;
 import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
+import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.robotics.navigation.MovePilot;
 
 public class DifferentialDrive {
@@ -32,7 +33,6 @@ public class DifferentialDrive {
 		Chassis chassis = new WheeledChassis(new Wheel[]{wheelleft, wheelright},
 				WheeledChassis.TYPE_DIFFERENTIAL);
 		pilot = new MovePilot(chassis);
-		//pilot.addMoveListener(this);
 		pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
 		pilot.setLinearSpeed(Config.LINEAR_SPEED);
 		pilot.setAngularSpeed(Config.ANGULAR_SPEED);
@@ -41,29 +41,54 @@ public class DifferentialDrive {
     }  
     
     /**
-     * Avance jusqu'à rencontrer un obstacle ou un palet
-     * Renvoie vrai si les pinces detectent un palet, faux si l'arret est dû à un obstacle
-     */
-    /*public boolean GoUntilTouch(TouchSensor touchsensor){
-    	if(vision.getRaw()[0]>=20){
-    		while(!touchsensor.isPressed()&&vision.getRaw()[0]>=20){
-    			pilot.travel(20);
-    		}
-    	}else{
-    		System.out.println("obstacle detecté!");
-    		Delay.msDelay(1000);
-    	}
-    	return touchsensor.isPressed();
-    }*/
-    
-    /**
-     * Avance jusqu'à rencontrer un obstacle ou un palet
+     * Avance par pas de 5cm jusqu'à rencontrer un obstacle ou un palet
      */
     public void GoUntilTouch(TouchSensor touchsensor){	
     	while(!touchsensor.isPressed()){
-    		pilot.travel(20);
+    		pilot.travel(5);
     	}
     }
+    
+    /**
+     * Le robot suit la ligne de couleur au dessus de laquelle il est placée lors de l'appel à cette fonction
+     * si le robot detecte du gris lors de l'appel il ne se déplacera pas (pas de ligne à suivre)
+     * si le robot perd la ligne à suivre il tentera de la retrouver en effectuant des petits mouvements
+     * (jusqu'à trois recherches anant abandon etarret de la fonction)
+     */
+    public void followLine(Couleur c){
+    	if(!c.isGrey()){
+    		int compteur=3;
+    		float[] couleurLigne=c.colorSample();
+    		while(compteur!=0){
+	    		pilot.travel(1);
+	    		if(c.isGrey()){
+	    			recoverLine(c,couleurLigne);
+	    			compteur--;
+	    		}
+	    		while(c.isThisColor(couleurLigne)){
+	    			pilot.travel(1);
+	    		}
+	    		
+    		}
+    	}
+    }
+    /**
+     * Le robot essaie de retrouver la ligne de couleur à suivre si il la trouve il se place 
+     * dessus, sinon il reprend son orientation initiale
+     * pas de retours pour définir réussite ou échec
+     */
+    private void recoverLine(Couleur c,float[] couleur){
+    	OdometryPoseProvider odo= new OdometryPoseProvider (getpilot());
+    	turnLeft(50);
+    	int i=0;
+    	while(!c.isThisColor(couleur) && i!=100){
+    		turnRight(5);
+    		i=i+5;
+    	}
+    	//VERIFIER TURN LEFT OU RIGHT
+    	turnLeft((int)odo.getPose().getHeading());//réorientation en cas d'échec
+    }
+    
     
     /**
      * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
