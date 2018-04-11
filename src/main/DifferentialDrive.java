@@ -86,7 +86,9 @@ public class DifferentialDrive {
     		i=i+5;
     	}
     	//VERIFIER TURN LEFT OU RIGHT
-    	turnLeft((int)odo.getPose().getHeading());//réorientation en cas d'échec
+    	if(i==100){
+    		turnLeft(50);
+    	}
     }
     
     
