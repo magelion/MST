@@ -6,6 +6,7 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
+import lejos.utility.Delay;
 
 public class DifferentialDrive {
 
@@ -32,10 +33,10 @@ public class DifferentialDrive {
 		Chassis chassis = new WheeledChassis(new Wheel[]{wheelleft, wheelright},
 				WheeledChassis.TYPE_DIFFERENTIAL);
 		pilot = new MovePilot(chassis);
-		pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
+		//pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
 		pilot.setLinearSpeed(Config.LINEAR_SPEED);
 		pilot.setAngularSpeed(Config.ANGULAR_SPEED);
-		pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
+		//pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
 		//vision= new VisionSensor();
     }  
     
@@ -58,15 +59,27 @@ public class DifferentialDrive {
     	if(!c.isGrey()){
     		int compteur=3;
     		float[] couleurLigne=c.colorSample();
-    		while(compteur!=0){
+    		//TouchSensor tSensor = new TouchSensor();
+    		while(/*!tSensor.isPressed()*/compteur!=0){
     	 		if(c.isGrey()){
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
+	    			System.out.println("Couleur grise");
+	    			Delay.msDelay(1000);
 	    		}
+    	 		System.out.println("trouvé ligne");
+    	 		Delay.msDelay(1000);
     			while(c.isThisColor(couleurLigne)){
-	    			pilot.travel(2);
-	    		}
+	    			pilot.travel(5);	
+	    			System.out.println("sur ligne");
+	    	 		Delay.msDelay(1000);
+    			}
+    	 		System.out.println("perdu ligne");
+    	 		Delay.msDelay(1000);
     		}
+    	}
+    	else {
+    		System.out.println("j'ai commencer sur sur gris");
     	}
     }
     /**

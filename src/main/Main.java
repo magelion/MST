@@ -29,28 +29,28 @@ public class Main {
 		if(c.isBlue()){
 			System.out.println("Bleu");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 		
 		System.out.println("Press enter to test black...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isBlack()){
 			System.out.println("Noir");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 		
 		System.out.println("Press enter to test green...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isGreen()){
 			System.out.println("Vert");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 			
 		System.out.println("Press enter to test red...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isRed()){
 			System.out.println("Rouge");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 			
 		
 		System.out.println("Press enter to test white...");
@@ -58,21 +58,21 @@ public class Main {
 		if(c.isWhite()){
 			System.out.println("Blanc");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 			
 		System.out.println("Press enter to test yellow...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isYellow()){
 			System.out.println("Jaune");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 		
 		System.out.println("Press enter to test grey...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isGrey()){
 			System.out.println("Gris");
 		}
-		Delay.msDelay(2000);
+		Delay.msDelay(1000);
 	}
 		
 	public static void testOdometrie(){

@@ -18,7 +18,7 @@ public class Couleur {
 	private static float[] line_black;
 	private static float[] line_yellow;
 	private static float[] grey_zone;
-    private final static double ERROR = 0.01;
+    private final static double ERROR = 0.02;
 	
     /**
      *@param option: si ==0, calibrage avec une seule mesure
@@ -45,7 +45,7 @@ public class Couleur {
 				line_green = calibrateAVG("Green");
 				line_black = calibrateAVG("Black");
 				line_blue = calibrateAVG("Blue");
-				line_white = calibrateAVG("Write");
+				line_white = calibrateAVG("White");
 				line_yellow = calibrateAVG("Yellow");
 				line_red = calibrateAVG("Red");
 				grey_zone = calibrateAVG("Grey");
