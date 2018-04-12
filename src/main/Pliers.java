@@ -49,7 +49,7 @@ class Pliers {
 	 */
 	void reinit() {
 		pliersMotor.rotate(-adjust);
-		isClosed = false;
+		isClosed = true;
 		Thread.yield();
 	}
 
