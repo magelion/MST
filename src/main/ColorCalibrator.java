@@ -1,5 +1,5 @@
-package aiPlanner;
-
+package main;
+/*
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
-import area.ColorSensor;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
@@ -16,18 +15,18 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-
+*/
 /**
- * Classe utilitaire permettant de générer un fichier de calibration des couleurs.
+ * Classe utilitaire permettant de gï¿½nï¿½rer un fichier de calibration des couleurs.
  * @author paul.carretero, florent.chastagner
  */
-public class ColorCalibrator {
+/*public class ColorCalibrator {*/
 	
 	/**
 	 * Lance la calibration des couleurs<br/>
 	 * Devrait etre lance apres chaque changement de luminosite
 	 */
-	public static void Calibrate() {
+/*	public static void Calibrate() {
 		Port port = LocalEV3.get().getPort(Main.COLOR_SENSOR);
 		EV3ColorSensor colorSensor = new EV3ColorSensor(port);
 		SampleProvider average = new MeanFilter(colorSensor.getRGBMode(), 1);
@@ -181,4 +180,4 @@ public class ColorCalibrator {
 		colorSensor.close();
 	}
 
-}
+}*/

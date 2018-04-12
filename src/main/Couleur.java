@@ -1,5 +1,8 @@
 package main;
 
+import java.io.File;
+import java.io.ObjectInputStream;
+
 import lejos.hardware.Button;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
@@ -143,4 +146,19 @@ public class Couleur {
 				Math.pow(v1[1] - v2[1], 2.0) +
 				Math.pow(v1[2] - v2[2], 2.0));
 	}
+	
+	/**
+	 * Tente de lire et charger le fichier de calibration.
+	 */
+	/*private void setCalibration(){
+		try{
+			File fichierRead =  new File("conf.txt") ;
+			ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichierRead)) ;
+			this.colors = (float[][])ois.readObject() ;
+			ois.close();
+		}
+		catch (Exception e) {
+			Main.printf("[COLOR SENSOR]          : Impossible de charger le fichier de calibration");
+		}
+	}*/
 }
