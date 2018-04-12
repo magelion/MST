@@ -1,5 +1,5 @@
 package main;
-/*
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,12 +15,12 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-*/
+
 /**
  * Classe utilitaire permettant de g�n�rer un fichier de calibration des couleurs.
  * @author paul.carretero, florent.chastagner
  */
-/*public class ColorCalibrator {*/
+public class ColorCalibrator {/*
 	
 	/**
 	 * Lance la calibration des couleurs<br/>
@@ -179,5 +179,5 @@ import lejos.utility.Delay;
 		}
 		colorSensor.close();
 	}
-
-}*/
+*/
+}
