@@ -8,7 +8,7 @@ import lejos.utility.Delay;
 public class Main {
 
 	public static void main(String args[]) {
-		//testCouleur();	
+		testCouleur();	
 		//testOdometrie();
 		//testDeplacementNaif();
 		TouchSensor tSensor = new TouchSensor();
@@ -19,7 +19,7 @@ public class Main {
 	
 	public static void testFollowLine(TouchSensor tSensor){
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
-		Couleur c=new Couleur(1);
+		Couleur c=new Couleur(0);
 		System.out.println("Place me in a line and press enter to test");
 		Button.ENTER.waitForPressAndRelease();
 		d.followLine(c, tSensor);
