@@ -11,8 +11,8 @@ public class Main {
 		testCouleur();	
 		//testOdometrie();
 		//testDeplacementNaif();
-		TouchSensor tSensor = new TouchSensor();
-		testFollowLine(tSensor);
+		//TouchSensor tSensor = new TouchSensor();
+		//testFollowLine(tSensor);
 	}
 	
 	public static void testFollowLine(TouchSensor tSensor){
