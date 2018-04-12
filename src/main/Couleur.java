@@ -1,77 +1,105 @@
 package main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+
 import lejos.hardware.Button;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
-import lejos.utility.Delay;
 
 public class Couleur {
+	public static Color BLACK;
+	public static Color BLUE;
+	public static Color GREEN;
+	public static Color GREY;
+	public static Color RED;
+	public static Color WHITE;
+	public static Color YELLOW;
 
-	private EV3ColorSensor colorSensor;
-	private SampleProvider average;
-	private static float[] line_white;
-	private static float[] line_blue;
-	private static float[] line_red;
-	private static float[] line_green;
-	private static float[] line_black;
-	private static float[] line_yellow;
-	private static float[] grey_zone;
-    private final static double ERROR = 0.01;
+    private final static double ERROR = 0.02;
+    
+	/**
+	 * indice de la couleur bleu dans le tableau
+	 */
+	public static final int COLOR_BLUE 		= 0;
+	/**
+	 * indice de la couleur noire dans le tableau
+	 */
+	public static final int COLOR_BLACK 	= 1;
+	/**
+	 * indice de la couleur blanche dans le tableau
+	 */
+	public static final int COLOR_WHITE 	= 2;
+	/**
+	 * indice de la couleur grise dans le tableau
+	 */
+	public static final int COLOR_GREY 		= 3;
+	/**
+	 * indice de la couleur jaune dans le tableau
+	 */
+	public static final int COLOR_YELLOW 	= 4;
+	/**
+	 * indice de la couleur rouge dans le tableau
+	 */
+	public static final int COLOR_RED 		= 5;
+	/**
+	 * indice de la couleur verte dans le tableau
+	 */
+	public static final int COLOR_GREEN 	= 6;
 	
-    /**
-     *@param option: si ==0, calibrage avec une seule mesure
+	/**
+	 * Tableau contenant l'indice de la couleur ainsi qu'un échantillon des valeurs couleurs récupérés
+	 */
+	private float[][]				colors;
+	
+	/**
+	 * Capteur de couleur physique du robot.
+	 */
+	private final EV3ColorSensor	colorSensor;
+	
+	/**
+	 * représnte les données fournit par le capteur de couleur sous forme standard
+	 */
+	private final SampleProvider	average;
+	
+	/**
+	 * Créer une nouvelle instance du capteur de couleur et initialize le SampleProvider 
+	 * et charge le fichier de configuration
+	 * @param option: si ==0, calibrage d'après fichier configuration
+	 * 				si ==1 avec une seule mesure
      * 				sinon calibrage avec trois mesures
      */
 	public Couleur(int option) {
 		colorSensor = new EV3ColorSensor(Config.COLORPORT);
 		average = new MeanFilter(colorSensor.getRGBMode(), 1);
-		
-		try {
-			
-			lightOn();
-			
 			if(option==0){
+				setCalibration();
+				System.out.println("[COLOR SENSOR]          : Initialized");
+			}else if(option==1){
 			//param = String de la couleur
-				line_green = calibrate("Green");
-				line_black = calibrate("Black");
-				line_blue = calibrate("Blue");
-				line_white = calibrate("White");
-				line_yellow = calibrate("Yellow");
-				line_red = calibrate("Red");
-				grey_zone = calibrate("Grey");
+				lightOn();
+				colors[COLOR_GREEN] = calibrate("Green");
+				colors[COLOR_BLACK] = calibrate("Black");
+				colors[COLOR_BLUE] = calibrate("Blue");
+				colors[COLOR_WHITE] = calibrate("White");
+				colors[COLOR_YELLOW] = calibrate("Yellow");
+				colors[COLOR_RED] = calibrate("Red");
+				colors[COLOR_GREY] = calibrate("Grey");
 			}else{
-				line_green = calibrateAVG("Green");
-				line_black = calibrateAVG("Black");
-				line_blue = calibrateAVG("Blue");
-				line_white = calibrateAVG("Write");
-				line_yellow = calibrateAVG("Yellow");
-				line_red = calibrateAVG("Red");
-				grey_zone = calibrateAVG("Grey");
+				lightOn();
+				colors[COLOR_GREEN] = calibrateAVG("Green");
+				colors[COLOR_BLACK] = calibrateAVG("Black");
+				colors[COLOR_BLUE] = calibrateAVG("Blue");
+				colors[COLOR_WHITE] = calibrateAVG("White");
+				colors[COLOR_YELLOW] = calibrateAVG("Yellow");
+				colors[COLOR_RED] = calibrateAVG("Red");
+				colors[COLOR_GREY] = calibrateAVG("Grey");
 			}
-
-		} catch (Throwable t) {
-			t.printStackTrace();
-			Delay.msDelay(10000);
-			System.exit(0);
-		}
 	}
 	
-	
-	/**
-	 * Allume la led de capture de couleur d'une couleur blanche
-	 */
-	public void lightOn(){
-		colorSensor.setFloodlight(Color.WHITE);
-	}
-	
-	/**
-	 * Eteins la led de capture de couleur
-	 */
-	public void lightOff(){
-		colorSensor.setFloodlight(false);
-	}
 	
 	float[] calibrate (String color){
 		System.out.println("Press enter to calibrate " + color + "...");
@@ -96,6 +124,13 @@ public class Couleur {
 		return res;
 	}
 	
+	float[] colorSample(){
+		float[] sample = new float[average.sampleSize()];
+		average.fetchSample(sample, 0);
+		return sample;
+	}
+	
+	
 	boolean isThisColor(float[] path){
 		float[] sample = new float[average.sampleSize()];
 		average.fetchSample(sample, 0);
@@ -104,36 +139,124 @@ public class Couleur {
 
 	
 	boolean isBlue(){
-		return isThisColor(line_blue);
+		return isThisColor(colors[COLOR_BLUE]);
 	}
 		
 	boolean isRed(){
-		return isThisColor(line_red);
+		return isThisColor(colors[COLOR_RED]);
 	}
 		
 	boolean isGreen(){
-		return isThisColor(line_green);
+		return isThisColor(colors[COLOR_GREEN]);
 	}
 		
 	boolean isBlack(){
-		return isThisColor(line_black);
+		return isThisColor(colors[COLOR_BLACK]);
 	}
 		
 	boolean isWhite(){
-		return isThisColor(line_white);
+		return isThisColor(colors[COLOR_WHITE]);
 	}
 		
 	boolean isYellow(){
-		return isThisColor(line_yellow);
+		return isThisColor(colors[COLOR_YELLOW]);
 	}
 	
 	boolean isGrey(){
-		return isThisColor(grey_zone);
+		return isThisColor(colors[COLOR_GREY]);
 	}
 	
-	private static double scalaire(float[] v1, float[] v2) {
+	/**
+	 * Allume le capteur de couleur
+	 */
+	public void lightOn(){
+		this.colorSensor.setFloodlight(Color.WHITE);
+	}
+	
+	/**
+	 * Termine le capteur de couleur
+	 */
+	public void lightOff(){
+		this.colorSensor.setFloodlight(false);
+	}
+
+	/**
+	 * Renvoie la couleur connue la plus proche.
+	 * 
+	 * @return la couleur (Color.EXAMPLE)
+	 */
+	public Color getCurrentColor(){
+		float[]        sample  = new float[this.average.sampleSize()];
+		double         minscal = Double.MAX_VALUE;
+		int            color   = -1;
+
+		this.average.fetchSample(sample, 0);
+
+		for(int i= 0; i< 7; i++){
+			if(this.colors[i].length > 0){
+				double scalaire = scalaire(sample, this.colors[i]);
+				if (scalaire < minscal) {
+					minscal = scalaire;
+					color = i;
+				}
+			}
+		}
+		return getRealColor(color);
+	}
+	
+	/**
+	 * Effectue la convertion entre l'indice dans le tableau de couleur et la couleur sous forme 
+	 * d'Enum pour le reste du programme
+	 * @param color un entier associé à une couleur
+	 * @return Color.COLOR la couleur associé à l'entier en entrée
+	 */
+	private static Color getRealColor(final int color) {
+		switch (color) {
+		case COLOR_BLACK:
+			return BLACK;
+		case COLOR_BLUE:
+			return BLUE;
+		case COLOR_GREEN:
+			return GREEN;
+		case COLOR_GREY:
+			return GREY;
+		case COLOR_RED:
+			return RED;
+		case COLOR_WHITE:
+			return WHITE;
+		case COLOR_YELLOW:
+			return YELLOW;
+		default:
+			return null;
+		}
+	}
+
+
+	/**
+	 * Calcule la distance entre deux couleurs.
+	 * @param v1 la preiere couleur
+	 * @param v2 la seconde couleur
+	 * @return la distance entre les deux couleurs.
+	 */
+	public static double scalaire(final float[] v1, final float[] v2) {
 		return Math.sqrt (Math.pow(v1[0] - v2[0], 2.0) +
 				Math.pow(v1[1] - v2[1], 2.0) +
 				Math.pow(v1[2] - v2[2], 2.0));
 	}
+	
+	/**
+	 * Tente de lire et charger le fichier de calibration.
+	 */
+	private void setCalibration(){
+		try{
+			File fichierRead =  new File("conf.txt") ;
+			ObjectInputStream ois =  new ObjectInputStream(new FileInputStream(fichierRead)) ;
+			this.colors = (float[][])ois.readObject() ;
+			ois.close();
+		}
+		catch (Exception e) {
+			System.out.println("[COLOR SENSOR]          : Impossible de charger le fichier de calibration");
+		}
+	}
+	
 }

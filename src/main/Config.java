@@ -17,12 +17,12 @@ final class Config {
 	public static final float DISTANCE_TO_CENTER    = 6.1f;//cm
 	
 	//Pour mouvements linéaires
-	public static final float LINEAR_ACCELERATION   = 12.0f;
-	public static final float LINEAR_SPEED			= 650.0f; //cm/sec 
+	public static final float LINEAR_ACCELERATION   = 0.0f;
+	public static float LINEAR_SPEED			= 650.0f; //cm/sec 
 	
 	//Pour rotations
-	public static final float ANGULAR_ACCELERATION  = 12.0f;
-	public static final float ANGULAR_SPEED			= 650.0f; //cm/sec 
+	public static final float ANGULAR_ACCELERATION  = 0.0f;
+	public static float ANGULAR_SPEED			= 650.0f; //cm/sec 
 	
 	public static final int   MAX_ROTATION_SPEED    = 800;
 	

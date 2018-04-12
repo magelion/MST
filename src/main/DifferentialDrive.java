@@ -6,6 +6,7 @@ import lejos.robotics.chassis.Chassis;
 import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
+import lejos.utility.Delay;
 
 public class DifferentialDrive {
 
@@ -32,38 +33,101 @@ public class DifferentialDrive {
 		Chassis chassis = new WheeledChassis(new Wheel[]{wheelleft, wheelright},
 				WheeledChassis.TYPE_DIFFERENTIAL);
 		pilot = new MovePilot(chassis);
-		//pilot.addMoveListener(this);
-		pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
+		//pilot.setLinearAcceleration(Config.LINEAR_ACCELERATION);
 		pilot.setLinearSpeed(Config.LINEAR_SPEED);
 		pilot.setAngularSpeed(Config.ANGULAR_SPEED);
-		pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
+		//pilot.setAngularAcceleration(Config.ANGULAR_ACCELERATION);  
 		//vision= new VisionSensor();
     }  
     
     /**
-     * Avance jusqu'à rencontrer un obstacle ou un palet
-     * Renvoie vrai si les pinces detectent un palet, faux si l'arret est dû à un obstacle
-     */
-    /*public boolean GoUntilTouch(TouchSensor touchsensor){
-    	if(vision.getRaw()[0]>=20){
-    		while(!touchsensor.isPressed()&&vision.getRaw()[0]>=20){
-    			pilot.travel(20);
-    		}
-    	}else{
-    		System.out.println("obstacle detecté!");
-    		Delay.msDelay(1000);
-    	}
-    	return touchsensor.isPressed();
-    }*/
-    
-    /**
-     * Avance jusqu'à rencontrer un obstacle ou un palet
+     * Avance par pas de 5cm jusqu'à rencontrer un obstacle ou un palet
      */
     public void GoUntilTouch(TouchSensor touchsensor){	
     	while(!touchsensor.isPressed()){
-    		pilot.travel(20);
+    		pilot.travel(5);
+    	}
+    	if(touchsensor.isPressed()) {
+    		System.out.println("TOUCH DETECTED");
     	}
     }
+    
+    /**
+     * Le robot suit la ligne de couleur au dessus de laquelle il est placée lors de l'appel à cette fonction
+     * si le robot detecte du gris lors de l'appel il ne se déplacera pas (pas de ligne à suivre)
+     * si le robot perd la ligne à suivre il tentera de la retrouver en effectuant des petits mouvements
+     * (jusqu'à trois recherches anant abandon etarret de la fonction)
+     */
+    public void followLine(Couleur c, TouchSensor tSensor){
+    	if(!c.isGrey()){
+    		int compteur=3;
+    		float[] couleurLigne=c.colorSample();
+    		while(!tSensor.isPressed() && compteur!=0){
+    	 		if(c.isGrey()){
+    	 			//Pour réduire la vitesse lors de la recherche de ligne
+    	 			Config.ANGULAR_SPEED = 100.0f;
+	    			recoverLine(c,couleurLigne);
+	    			compteur--;
+	    			System.out.println("Couleur grise");
+	    			//Delay.msDelay(10);
+	    			
+	    			//Possibilité de modifier ANGULAR_SPEED à la place
+	    			Config.ANGULAR_SPEED = 650.0f;
+	    		}
+    	 		Delay.msDelay(10);
+    			while(c.isThisColor(couleurLigne)){
+	    			pilot.travel(10);	
+	    			System.out.println("sur ligne");
+	    	 		//Delay.msDelay(10);
+    			}
+    	 		System.out.println("perdu ligne");
+    	 		//Delay.msDelay(10);
+    		}
+    		if(tSensor.isPressed()) {
+    			System.out.println("PALET DÉTECTÉ");
+    	 		//Delay.msDelay(10);
+    		}
+    	}
+    	else {
+    		System.out.println("j'ai commencer sur sur gris");
+    	}
+    }
+    /**
+     * Le robot essaie de retrouver la ligne de couleur à suivre si il la trouve il se place 
+     * dessus, sinon il reprend son orientation initiale
+     * pas de retours pour définir réussite ou échec
+     */
+    private void recoverLine(Couleur c,float[] couleur){
+    	boolean inversionSens = false;
+    	for(int i = 1; !c.isThisColor(couleur) && i!=6;i++){
+    		if (inversionSens) {
+    			//turnRight(5*i);
+    			pilot.rotate(-5*i);
+    		}
+    		else {
+    			//turnLeft(5*i);
+    			pilot.rotate(5*i);
+    		}
+    		inversionSens = !inversionSens;
+    	}
+    	
+    	
+    	
+    	
+    	
+    	
+    	/*turnLeft(50);
+    	int i=0;
+    	while(!c.isThisColor(couleur) && i!=100){
+    		turnRight(5);
+    		i=i+5;
+    	}
+    	//VERIFIER TURN LEFT OU RIGHT
+    	if(i==100){
+    		turnLeft(50);
+    	}*/
+    }
+    
     
     /**
      * Précond: robot orienté parallèlement à la table, le noeud visé est atténiable
