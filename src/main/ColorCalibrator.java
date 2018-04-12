@@ -1,5 +1,5 @@
 package main;
-/*
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,27 +8,25 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
 import lejos.hardware.Button;
-import lejos.hardware.ev3.LocalEV3;
-import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 import lejos.utility.Delay;
-*/
+
 /**
  * Classe utilitaire permettant de g�n�rer un fichier de calibration des couleurs.
  * @author paul.carretero, florent.chastagner
  */
-/*public class ColorCalibrator {*/
-	
+public class ColorCalibrator {
+
+    private final static double ERROR = 0.01;
 	/**
 	 * Lance la calibration des couleurs<br/>
 	 * Devrait etre lance apres chaque changement de luminosite
 	 */
-/*	public static void Calibrate() {
-		Port port = LocalEV3.get().getPort(Main.COLOR_SENSOR);
-		EV3ColorSensor colorSensor = new EV3ColorSensor(port);
+	public static void Calibrate() {
+		EV3ColorSensor colorSensor = new EV3ColorSensor(Config.COLORPORT);
 		SampleProvider average = new MeanFilter(colorSensor.getRGBMode(), 1);
 		colorSensor.setFloodlight(Color.WHITE);
 		
@@ -38,7 +36,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] blue = new float[average.sampleSize()];
 		average.fetchSample(blue, 0);
-		colors[ColorSensor.COLOR_BLUE] = blue;
+		colors[Couleur.COLOR_BLUE] = blue;
 		
 		Delay.msDelay(300);
 		
@@ -46,7 +44,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] red = new float[average.sampleSize()];
 		average.fetchSample(red, 0);
-		colors[ColorSensor.COLOR_RED] = red;
+		colors[Couleur.COLOR_RED] = red;
 		
 		Delay.msDelay(300);
 		
@@ -54,7 +52,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] green = new float[average.sampleSize()];
 		average.fetchSample(green, 0);
-		colors[ColorSensor.COLOR_GREEN] = green;
+		colors[Couleur.COLOR_GREEN] = green;
 		
 		Delay.msDelay(300);
 
@@ -62,7 +60,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] black = new float[average.sampleSize()];
 		average.fetchSample(black, 0);
-		colors[ColorSensor.COLOR_BLACK] = black;
+		colors[Couleur.COLOR_BLACK] = black;
 		
 		Delay.msDelay(300);
 		
@@ -70,7 +68,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] grey = new float[average.sampleSize()];
 		average.fetchSample(grey, 0);
-		colors[ColorSensor.COLOR_GREY] = grey;
+		colors[Couleur.COLOR_GREY] = grey;
 		
 		Delay.msDelay(300);
 		
@@ -78,7 +76,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] white = new float[average.sampleSize()];
 		average.fetchSample(white, 0);
-		colors[ColorSensor.COLOR_WHITE] = white;
+		colors[Couleur.COLOR_WHITE] = white;
 		
 		Delay.msDelay(300);
 		
@@ -86,7 +84,7 @@ import lejos.utility.Delay;
 		Button.waitForAnyPress();
 		float[] yellow = new float[average.sampleSize()];
 		average.fetchSample(yellow, 0);
-		colors[ColorSensor.COLOR_YELLOW] = yellow;
+		colors[Couleur.COLOR_YELLOW] = yellow;
 		
 		colorSensor.setFloodlight(false);
 		float[][] readColors = new float[][]{};
@@ -115,53 +113,53 @@ import lejos.utility.Delay;
 			System.exit(3);
 		}
 		
-		boolean again = true;
+		/*boolean again = true;
 		
 		while (again) {
 			float[] sample = new float[average.sampleSize()];
 			System.out.println("\nPress UP to detect a color...");
 			Button.UP.waitForPressAndRelease();
 			average.fetchSample(sample, 0);
-			double minscal = Double.MAX_VALUE;
+			double minscal = ERROR;
 			String color = "";
 			
-			double scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_BLUE]);	
+			double scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_BLUE]);	
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "blue";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_RED]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_RED]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "red";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_GREEN]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_GREEN]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "green";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_BLACK]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_BLACK]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "black";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_GREY]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_GREY]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "grey";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_YELLOW]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_YELLOW]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "yellow";
 			}
 			
-			scalaire = ColorSensor.scalaire(sample, readColors[ColorSensor.COLOR_WHITE]);
+			scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_WHITE]);
 			if (scalaire < minscal) {
 				minscal = scalaire;
 				color = "white";
@@ -176,8 +174,8 @@ import lejos.utility.Delay;
 				again = false;
 			}
 			Delay.msDelay(300);
-		}
+		}*/
 		colorSensor.close();
 	}
 
-}*/
+}
