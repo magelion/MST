@@ -47,6 +47,9 @@ public class DifferentialDrive {
     	while(!touchsensor.isPressed()){
     		pilot.travel(5);
     	}
+    	if(touchsensor.isPressed()) {
+    		System.out.println("TOUCH DETECTED");
+    	}
     }
     
     /**
@@ -62,27 +65,27 @@ public class DifferentialDrive {
     		while(!tSensor.isPressed() && compteur!=0){
     	 		if(c.isGrey()){
     	 			//Pour réduire la vitesse lors de la recherche de ligne
-    	 			Config.ANGULAR_ACCELERATION = 12.0f;
+    	 			Config.ANGULAR_SPEED = 100.0f;
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
 	    			System.out.println("Couleur grise");
-	    			Delay.msDelay(10);
+	    			//Delay.msDelay(10);
 	    			
 	    			//Possibilité de modifier ANGULAR_SPEED à la place
-	    			Config.ANGULAR_ACCELERATION = 0.0f;
+	    			Config.ANGULAR_SPEED = 650.0f;
 	    		}
     	 		Delay.msDelay(10);
     			while(c.isThisColor(couleurLigne)){
-	    			pilot.travel(5);	
+	    			pilot.travel(10);	
 	    			System.out.println("sur ligne");
-	    	 		Delay.msDelay(10);
+	    	 		//Delay.msDelay(10);
     			}
     	 		System.out.println("perdu ligne");
-    	 		Delay.msDelay(10);
+    	 		//Delay.msDelay(10);
     		}
     		if(tSensor.isPressed()) {
     			System.out.println("PALET DÉTECTÉ");
-    	 		Delay.msDelay(10);
+    	 		//Delay.msDelay(10);
     		}
     	}
     	else {

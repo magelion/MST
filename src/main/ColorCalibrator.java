@@ -18,9 +18,7 @@ import lejos.utility.Delay;
  * Classe utilitaire permettant de g�n�rer un fichier de calibration des couleurs.
  * @author paul.carretero, florent.chastagner
  */
-public class ColorCalibrator {
-
-    private final static double ERROR = 0.01;
+public class ColorCalibrator {/*
 	/**
 	 * Lance la calibration des couleurs<br/>
 	 * Devrait etre lance apres chaque changement de luminosite
@@ -177,5 +175,5 @@ public class ColorCalibrator {
 		}*/
 		colorSensor.close();
 	}
-
 }
+

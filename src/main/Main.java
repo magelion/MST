@@ -13,6 +13,9 @@ public class Main {
 		//testDeplacementNaif();
 		//TouchSensor tSensor = new TouchSensor();
 		//testFollowLine(tSensor);
+
+		//testTouchSensor(tSensor);
+
 	}
 	
 	public static void testFollowLine(TouchSensor tSensor){
@@ -21,6 +24,13 @@ public class Main {
 		System.out.println("Place me in a line and press enter to test");
 		Button.ENTER.waitForPressAndRelease();
 		d.followLine(c, tSensor);
+	}
+	
+	public static void testTouchSensor(TouchSensor tSensor){
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
+		System.out.println("Place me in a line and press enter to test");
+		Button.ENTER.waitForPressAndRelease();
+		d.GoUntilTouch(tSensor);
 	}
 	
 	public static void testCouleur(){
