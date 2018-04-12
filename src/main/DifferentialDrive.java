@@ -55,32 +55,34 @@ public class DifferentialDrive {
      * si le robot perd la ligne à suivre il tentera de la retrouver en effectuant des petits mouvements
      * (jusqu'à trois recherches anant abandon etarret de la fonction)
      */
-    public void followLine(Couleur c){
+    public void followLine(Couleur c, TouchSensor tSensor){
     	if(!c.isGrey()){
     		int compteur=3;
     		float[] couleurLigne=c.colorSample();
-    		//TouchSensor tSensor = new TouchSensor();
-    		while(/*!tSensor.isPressed()*/compteur!=0){
+    		while(!tSensor.isPressed() && compteur!=0){
     	 		if(c.isGrey()){
     	 			//Pour réduire la vitesse lors de la recherche de ligne
     	 			Config.ANGULAR_ACCELERATION = 12.0f;
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
 	    			System.out.println("Couleur grise");
-	    			Delay.msDelay(1000);
+	    			Delay.msDelay(10);
 	    			
 	    			//Possibilité de modifier ANGULAR_SPEED à la place
 	    			Config.ANGULAR_ACCELERATION = 0.0f;
 	    		}
-    	 		System.out.println("trouvé ligne");
-    	 		Delay.msDelay(1000);
+    	 		Delay.msDelay(10);
     			while(c.isThisColor(couleurLigne)){
 	    			pilot.travel(5);	
 	    			System.out.println("sur ligne");
-	    	 		Delay.msDelay(1000);
+	    	 		Delay.msDelay(10);
     			}
     	 		System.out.println("perdu ligne");
-    	 		Delay.msDelay(1000);
+    	 		Delay.msDelay(10);
+    		}
+    		if(tSensor.isPressed()) {
+    			System.out.println("PALET DÉTECTÉ");
+    	 		Delay.msDelay(10);
     		}
     	}
     	else {
