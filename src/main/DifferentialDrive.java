@@ -62,10 +62,15 @@ public class DifferentialDrive {
     		//TouchSensor tSensor = new TouchSensor();
     		while(/*!tSensor.isPressed()*/compteur!=0){
     	 		if(c.isGrey()){
+    	 			//Pour réduire la vitesse lors de la recherche de ligne
+    	 			Config.ANGULAR_ACCELERATION = 12.0f;
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
 	    			System.out.println("Couleur grise");
 	    			Delay.msDelay(1000);
+	    			
+	    			//Possibilité de modifier ANGULAR_SPEED à la place
+	    			Config.ANGULAR_ACCELERATION = 0.0f;
 	    		}
     	 		System.out.println("trouvé ligne");
     	 		Delay.msDelay(1000);
