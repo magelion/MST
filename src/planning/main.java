@@ -24,8 +24,11 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.PriorityQueue;
@@ -43,7 +46,7 @@ public class main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		File domaine = new File("/home/maxence/PATIA/Planification/domain_plan.pddl");
-		File plan = new File("/home/maxence/PATIA/Planification/plan.pddl");
+		File plan = new File("/home/maxence/PATIA/Planification/plan2.pddl");
 
 		
 		
@@ -72,10 +75,58 @@ public class main {
 		CodedProblem encodedprob= Encoder.encode(domain, problem);*/
 		
 		SequentialPlan result = clamidia.search(encodedprob);
+		StringBuilder strb = new StringBuilder();
+		System.out.println("balise");
+		//System.out.print(result.toString());
+		//strb.append(encodedprob.toString(result));
+		//System.out.println(strb.toString());
+		System.out.println(encodedprob.toString(result));
 		
-		System.out.print(result.toString());
-		
-		
+		//advanced print/////////////////
+		final StringBuilder str = new StringBuilder();
+        result.timeSpecifiers().forEach(time ->
+        result.getActionSet(time).forEach(a ->
+                str.append( encodedprob.toShortString(a)+" ")));
+//System.out.println(str.toString());
+        System.out.println(str);
+        System.out.println(str.charAt(5));
+		//////////////////////////////////
+		System.out.println("fin");
+		String concate[] = str.toString().split(" ");
+		//System.out.println(concate[1]+" "+concate[2]);
+		String envoie = new String();
+		/*System.out.println("VERIFICATION CHAINE");
+		for (int i = 0; i < concate.length; i++) {
+			System.out.print(concate[i]+" ");
+		}*/
+		for (int i = 0; i < concate.length; i++) {
+			switch (concate[i]) {
+			case "move" :
+				envoie=envoie+" "+concate[i]+" "+concate[i+1]+" "+concate[i+2]+" ";
+				i=i+2;
+				break;
+			case "saisir_palet" :
+				envoie=envoie+concate[i]+" ";
+				i=i+2;
+				break;
+			case "deposer_palet" :
+				envoie=envoie+concate[i]+" ";
+				i=i+2;
+				break;
+			case "ouvrir_pince" :
+				envoie=envoie+concate[i]+" ";
+				i=i+1;
+				break;
+			case "fermer_pince" :
+				envoie=envoie+concate[i]+" ";
+				i=i+1;
+				break;
+			default:
+				envoie=envoie+"ERROR"+concate[i]+" ";
+				break;
+			}
+		}
+		System.out.println(" CHAINE :\n"+envoie);
 	}
 
 }

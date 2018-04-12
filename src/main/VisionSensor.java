@@ -1,4 +1,4 @@
-package src.main;
+package main;
 
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.port.Port;
