@@ -1,5 +1,7 @@
 package main;
 
+import java.io.IOException;
+
 import lejos.hardware.Button;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.utility.Delay;
@@ -8,14 +10,22 @@ import lejos.utility.Delay;
 public class Main {
 
 	public static void main(String args[]) {
-		testCouleur();	
+		//testCouleur();	
 		//testOdometrie();
 		//testDeplacementNaif();
 		//TouchSensor tSensor = new TouchSensor();
 		//testFollowLine(tSensor);
 
-		//testTouchSensor(tSensor);
-
+		//testTouchSensorThenGrab(tSensor);
+		ClientSockPlanner csp = new ClientSockPlanner();
+		try {
+			System.out.println(csp.bfr.readLine());
+			Delay.msDelay(3000);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void testFollowLine(TouchSensor tSensor){
@@ -30,7 +40,14 @@ public class Main {
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
 		System.out.println("Place me in a line and press enter to test");
 		Button.ENTER.waitForPressAndRelease();
-		d.GoUntilTouch(tSensor);
+		d.GoUntilTouch(tSensor, false);
+	}
+	
+	public static void testTouchSensorThenGrab(TouchSensor tSensor){
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
+		System.out.println("Place me in a line and press enter to test");
+		Button.ENTER.waitForPressAndRelease();
+		d.GoUntilTouch(tSensor, true);
 	}
 	
 	public static void testCouleur(){
@@ -103,7 +120,7 @@ public class Main {
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
 		d.GoNoeudHaut();
 		d.GoNoeudBasDroite();
-		d.GoUntilTouch(new TouchSensor());
+		d.GoUntilTouch(new TouchSensor(), false);
 	}
 }
 	

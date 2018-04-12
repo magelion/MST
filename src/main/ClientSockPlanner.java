@@ -14,7 +14,7 @@ public class ClientSockPlanner {
 	public ClientSockPlanner() {
 		//TODO FINIR SOCKETS
 		try{
-		     socket = new Socket("MST", 4321);
+		     socket = new Socket("192.168.1.23", 4242);
 		     pwr = new PrintWriter(socket.getOutputStream(), 
 		                 true);
 		     bfr = new BufferedReader(new InputStreamReader(

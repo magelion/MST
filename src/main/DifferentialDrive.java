@@ -43,13 +43,21 @@ public class DifferentialDrive {
     /**
      * Avance par pas de 5cm jusqu'à rencontrer un obstacle ou un palet
      */
-    public void GoUntilTouch(TouchSensor touchsensor){	
-    	while(!touchsensor.isPressed()){
-    		pilot.travel(5);
+    public void GoUntilTouch(TouchSensor touchsensor, boolean grab){
+    	Pliers pliers = new Pliers(20);
+    	
+    	pilot.setLinearAcceleration(10.0f);
+    	pilot.forward();
+    	
+    	while(!touchsensor.isPressed()) {
     	}
-    	if(touchsensor.isPressed()) {
     		System.out.println("TOUCH DETECTED");
-    	}
+   			pilot.stop();
+    		if(grab) {
+    			if(!pliers.isClosed()) {
+    				pliers.close();
+    			}
+    		}    	
     }
     
     /**
