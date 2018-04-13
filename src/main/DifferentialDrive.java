@@ -13,7 +13,7 @@ public class DifferentialDrive {
     /**
      * Delta of angle.
      */
-    private static final float DELTA = -10/360;
+    private static final float DELTA = /*-10/360*/ -30/360;
     
     /**
      * Dimension table en cm.
@@ -73,14 +73,14 @@ public class DifferentialDrive {
     		while(!tSensor.isPressed() && compteur!=0){
     	 		if(c.isGrey()){
     	 			//Pour réduire la vitesse lors de la recherche de ligne
-    	 			Config.ANGULAR_SPEED = 100.0f;
+    	 			Config.ANGULAR_SPEED = 20.0f;
 	    			recoverLine(c,couleurLigne);
 	    			compteur--;
 	    			System.out.println("Couleur grise");
 	    			//Delay.msDelay(10);
 	    			
 	    			//Possibilité de modifier ANGULAR_SPEED à la place
-	    			Config.ANGULAR_SPEED = 650.0f;
+	    			Config.ANGULAR_SPEED = 230.0f;
 	    		}
     	 		Delay.msDelay(10);
     			while(c.isThisColor(couleurLigne)){

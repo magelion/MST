@@ -3,6 +3,7 @@ package main;
 import java.io.IOException;
 
 import lejos.hardware.Button;
+import lejos.robotics.Color;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.utility.Delay;
 
@@ -13,18 +14,19 @@ public class Main {
 		//testCouleur();	
 		//testOdometrie();
 		//testDeplacementNaif();
-		//TouchSensor tSensor = new TouchSensor();
+		TouchSensor tSensor = new TouchSensor();
 		//testFollowLine(tSensor);
 
 		//testTouchSensorThenGrab(tSensor);
-		ClientSockPlanner csp = new ClientSockPlanner();
+		testBringBackBounty(tSensor);
+		/*ClientSockPlanner csp = new ClientSockPlanner();
 		try {
 			System.out.println(csp.bfr.readLine());
 			Delay.msDelay(3000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 	}
 	
@@ -49,6 +51,61 @@ public class Main {
 		Button.ENTER.waitForPressAndRelease();
 		d.GoUntilTouch(tSensor, true);
 	}
+	
+	public static void testBringBackBounty(TouchSensor tSensor) {
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
+		System.out.println("Place me in a line and press enter to test");
+		Button.ENTER.waitForPressAndRelease();
+    	Pliers pliers = new Pliers(20);
+    	
+    	d.getpilot().setLinearAcceleration(10.0f);
+    	Config.ANGULAR_SPEED=2.0f;
+    	Config.ANGULAR_ACCELERATION=10.0f;
+    	d.getpilot().forward();
+    	
+    	while(!tSensor.isPressed()) {
+    	}
+    		System.out.println("TOUCH DETECTED");
+   			d.getpilot().stop();
+    		if(!pliers.isClosed()) {
+    				pliers.close();
+    		}
+		d.turnLeft(90);
+		d.turnLeft(90);
+		d.getpilot().travel(50);
+		if (pliers.isClosed()) {
+			pliers.open();
+		}
+    }
+	
+	public static void testBringBackBountyColor(TouchSensor tSensor) {
+		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
+		Couleur c=new Couleur(0);
+		System.out.println("Place me in a line and press enter to test");
+		Button.ENTER.waitForPressAndRelease();
+    	Pliers pliers = new Pliers(20);
+    	Color cCurrent =  c.getCurrentColor();
+    	
+    	d.getpilot().setLinearAcceleration(10.0f);
+    	d.getpilot().forward();
+    	
+    	while(!tSensor.isPressed()) {
+    	}
+    		System.out.println("TOUCH DETECTED");
+   			d.getpilot().stop();
+    		if(!pliers.isClosed()) {
+    				pliers.close();
+    		}
+		d.getpilot().rotateLeft();
+		while(c.getCurrentColor()!=cCurrent)
+		{}
+		d.getpilot().travel(40);
+		if (pliers.isClosed()) {
+			pliers.open();
+		}
+    }
+	
+	
 	
 	public static void testCouleur(){
 		Couleur c=new Couleur(0);

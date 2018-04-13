@@ -21,7 +21,7 @@ final class Config {
 	public static float LINEAR_SPEED			= 20.0f; //cm/sec 
 	
 	//Pour rotations
-	public static final float ANGULAR_ACCELERATION  = 0.0f;
+	public static float ANGULAR_ACCELERATION  = 0.0f;
 	public static float ANGULAR_SPEED			= 230.0f; //cm/sec 
 	
 	public static final int   MAX_ROTATION_SPEED    = 800;
