@@ -7,16 +7,20 @@ import lejos.robotics.chassis.Wheel;
 import lejos.robotics.chassis.WheeledChassis;
 import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
-
+/**
+ * 
+ * @author 
+ *
+ */
 public class DifferentialDrive {
 
     /**
      * Delta of angle.
      */
-    private static final float DELTA = /*-10/360*/ -30/360;
+    private static final float DELTA = -30/360;
     
     /**
-     * Dimension table en cm.
+     * Dimension de la table en cm.
      */
     private static final int LARG=50;
     private static final int LONG=60;
@@ -118,22 +122,6 @@ public class DifferentialDrive {
     		}
     		inversionSens = !inversionSens;
     	}
-    	
-    	
-    	
-    	
-    	
-    	
-    	/*turnLeft(50);
-    	int i=0;
-    	while(!c.isThisColor(couleur) && i!=100){
-    		turnRight(5);
-    		i=i+5;
-    	}
-    	//VERIFIER TURN LEFT OU RIGHT
-    	if(i==100){
-    		turnLeft(50);
-    	}*/
     }
     
     

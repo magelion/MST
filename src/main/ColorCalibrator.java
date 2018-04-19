@@ -23,6 +23,10 @@ public class ColorCalibrator {/*
 	 * Lance la calibration des couleurs<br/>
 	 * Devrait etre lance apres chaque changement de luminosite
 	 */
+		/**
+		 * Patia 2018:
+		 * Partie de vérification de la calibration désactivée pour la démonstration du code
+		 */
 	public static void Calibrate() {
 		EV3ColorSensor colorSensor = new EV3ColorSensor(Config.COLORPORT);
 		SampleProvider average = new MeanFilter(colorSensor.getRGBMode(), 1);
@@ -118,7 +122,7 @@ public class ColorCalibrator {/*
 			System.out.println("\nPress UP to detect a color...");
 			Button.UP.waitForPressAndRelease();
 			average.fetchSample(sample, 0);
-			double minscal = ERROR;
+			double minscal = Double.MAX_VALUE;
 			String color = "";
 			
 			double scalaire = Couleur.scalaire(sample, readColors[Couleur.COLOR_BLUE]);	

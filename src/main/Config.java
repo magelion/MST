@@ -26,6 +26,7 @@ final class Config {
 	
 	public static final int   MAX_ROTATION_SPEED    = 800;
 	
+	/** Ports moteurs	 */
     /**
      * Pliers port.
      */
@@ -57,30 +58,6 @@ final class Config {
     static final Port ULTRASONICPORT = SensorPort.S4;
 
     /**
-     * True if the robot start to left.
-     */
-    //static final boolean ISLEFT = false;
-    /** Variable define.
-     * */
-    //static final int LONGSIZEBLOC = 45;
-
-    /** Variable define.
-     * */
-    //static final int HYPFIRST = 195;
-
-    /** Variable define.
-     * */
-    //static final int RECUL = 20;
-
-    /** Variable define.
-     * */
-    //static final int DEMITOUR = 180;
-
-    /** Speed rotate.
-     * */
-    //static final double SPEEDROTATE = 300.0;
-
-    /**
      * MaxSpeed for pliers.
      */
     static final int MAXSPEEDPLIERS = 6000;
@@ -89,17 +66,6 @@ final class Config {
      * Rotation range for pliers.
      */
     static final int ROTATEPLIERS = 1000;
-
-    /**
-     * Nb step.
-     */
-    //static final int TIME = 3000;
-
-    /**
-     * Rotation range for adjust pliers.
-     */
-    //static final int ADJUSTROTATEPLIERS = 300;
-
 
      /** constructor.
      */
