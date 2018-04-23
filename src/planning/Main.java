@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import fr.uga.pddl4j.encoding.CodedProblem;
-import fr.uga.pddl4j.parser.ErrorManager;
+
 
 import fr.uga.pddl4j.planners.ProblemFactory;
 
@@ -18,8 +18,8 @@ import fr.uga.pddl4j.util.SequentialPlan;
 public class Main {
 
 	public static void main(String[] args) {
-		final File domaine = new File("/home/maxence/PATIA/Planification/domain_plan.pddl");
-		final File plan = new File("/home/maxence/PATIA/Planification/plan2.pddl");
+		final File domaine = new File("../../Planification/domain_plan.pddl");
+		final File plan = new File("../../Planification/plan2.pddl");
 		
 		/*
 		ServerSockPlanner socketcom = null;
