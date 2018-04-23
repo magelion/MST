@@ -21,7 +21,10 @@ public class Couleur {
 	public static Color RED;
 	public static Color WHITE;
 	public static Color YELLOW;
-
+	
+    /*Erreur mise à 0.02 afin d'assurer la reconnaissance 
+    d'une ligne même si le robot n'est pas complètement dessus
+    */
     private final static double ERROR = 0.02;
     
 	/**
@@ -103,7 +106,7 @@ public class Couleur {
 			}
 	}
 	
-	
+	/*renvoie un échantillon correspondant à la couleur que l'on veut calibrer*/
 	float[] calibrate (String color){
 		System.out.println("Press enter to calibrate " + color + "...");
 		Button.ENTER.waitForPressAndRelease();
@@ -111,7 +114,7 @@ public class Couleur {
 		average.fetchSample(path, 0);
 		return path;
 	}
-	
+	/*Calibre les couleurs trois fois et retient la loyenne des échantillons*/
 	float[] calibrateAVG (String color){
 		float[] t1 = calibrate(color);
 		float[] t2 = calibrate(color);
@@ -177,14 +180,14 @@ public class Couleur {
 	}
 	
 	/**
-	 * Termine le capteur de couleur
+	 * Éteint le capteur de couleur
 	 */
 	public void lightOff(){
 		this.colorSensor.setFloodlight(false);
 	}
 
 	/**
-	 * Renvoie la couleur connue la plus proche.
+	 * Renvoie la couleur connue la plus proche de l'échantillon.
 	 * 
 	 * @return la couleur (Color.EXAMPLE)
 	 */

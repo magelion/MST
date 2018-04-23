@@ -7,7 +7,9 @@ import lejos.robotics.Color;
 import lejos.robotics.localization.OdometryPoseProvider;
 import lejos.utility.Delay;
 
-
+/* 
+ * Contient les méthode de test permettant de créer plusieurs exécutables
+*/
 public class Main {
 
 	public static void main(String args[]) {
@@ -43,6 +45,8 @@ public class Main {
 		d.GoUntilTouch(tSensor, true);
 	}
 	
+    /* Méthode de test de détection et de récupération de palet
+     * basée uniquement sur le Capteur de pression*/
 	public static void testBringBackBounty(TouchSensor tSensor) {
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
 		System.out.println("Place me in a line and press enter to test");
@@ -68,7 +72,8 @@ public class Main {
 			pliers.open();
 		}
     }
-	
+	/* Méthode de test de récupération de palet en suivant
+     * une ligne de couleur. NE FONCTIONNE PAS*/
 	public static void testBringBackBountyColor(TouchSensor tSensor) {
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT);
 		Couleur c=new Couleur(0);

@@ -9,13 +9,14 @@ import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 /**
  * 
- * @author Patia 2018-2019(projet MST)
- *
+ * @author Amelina, Peio
+ *  Code basé sur le dossier Patia2016
+ *  Classe gérant les différents moteurs du robot
  */
 public class DifferentialDrive {
 
     /**
-     * Delta of angle.
+     * Delta de l'angle.
      */
     private static final float DELTA = -30/360;
     
