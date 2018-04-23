@@ -46,7 +46,7 @@ public class DifferentialDrive {
     }  
     
     /**
-     * Avance par pas de 5cm jusqu'à rencontrer un obstacle ou un palet
+     * Avance jusqu'à rencontrer un obstacle ou un palet
      */
     public void GoUntilTouch(TouchSensor touchsensor, boolean grab){
     	Pliers pliers = new Pliers(20);

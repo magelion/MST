@@ -239,7 +239,7 @@ public class Couleur {
 
 
 	/**
-	 * Calcule la distance entre deux couleurs.
+	 * Calcule la distance entre deux couleurs.la méthode get>la méhtttttttt
 	 * @param v1 la preiere couleur
 	 * @param v2 la seconde couleur
 	 * @return la distance entre les deux couleurs.
