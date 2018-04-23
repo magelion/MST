@@ -9,7 +9,7 @@ import lejos.robotics.navigation.MovePilot;
 import lejos.utility.Delay;
 /**
  * 
- * @author 
+ * @author Patia 2018-2019(projet MST)
  *
  */
 public class DifferentialDrive {
@@ -68,7 +68,7 @@ public class DifferentialDrive {
      * Le robot suit la ligne de couleur au dessus de laquelle il est placée lors de l'appel à cette fonction
      * si le robot detecte du gris lors de l'appel il ne se déplacera pas (pas de ligne à suivre)
      * si le robot perd la ligne à suivre il tentera de la retrouver en effectuant des petits mouvements
-     * (jusqu'à trois recherches anant abandon etarret de la fonction)
+     * (jusqu'à trois recherches anant abandon et arret de la fonction)
      */
     public void followLine(Couleur c, TouchSensor tSensor){
     	if(!c.isGrey()){
@@ -90,14 +90,11 @@ public class DifferentialDrive {
     			while(c.isThisColor(couleurLigne)){
 	    			pilot.travel(10);	
 	    			System.out.println("sur ligne");
-	    	 		//Delay.msDelay(10);
     			}
     	 		System.out.println("perdu ligne");
-    	 		//Delay.msDelay(10);
     		}
     		if(tSensor.isPressed()) {
     			System.out.println("PALET DÉTECTÉ");
-    	 		//Delay.msDelay(10);
     		}
     	}
     	else {
@@ -106,18 +103,16 @@ public class DifferentialDrive {
     }
     /**
      * Le robot essaie de retrouver la ligne de couleur à suivre si il la trouve il se place 
-     * dessus, sinon il reprend son orientation initiale
+     * dessus,
      * pas de retours pour définir réussite ou échec
      */
     private void recoverLine(Couleur c,float[] couleur){
     	boolean inversionSens = false;
     	for(int i = 1; !c.isThisColor(couleur) && i!=6;i++){
     		if (inversionSens) {
-    			//turnRight(5*i);
     			pilot.rotate(-5*i);
     		}
     		else {
-    			//turnLeft(5*i);
     			pilot.rotate(5*i);
     		}
     		inversionSens = !inversionSens;

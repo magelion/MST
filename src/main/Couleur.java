@@ -10,6 +10,9 @@ import lejos.robotics.Color;
 import lejos.robotics.SampleProvider;
 import lejos.robotics.filter.MeanFilter;
 
+/**
+*Classe en grande partie inspirée du code fourni (ColorSensor MarvinPersycup)
+*/
 public class Couleur {
 	public static Color BLACK;
 	public static Color BLUE;

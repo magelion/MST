@@ -11,7 +11,7 @@ import lejos.utility.Delay;
 public class Main {
 
 	public static void main(String args[]) {
-		//testCouleur();	
+		//testCouleur(0);	
 		//testOdometrie();
 		//testDeplacementNaif();
 		TouchSensor tSensor = new TouchSensor();
@@ -19,15 +19,6 @@ public class Main {
 
 		//testTouchSensorThenGrab(tSensor);
 		testBringBackBounty(tSensor);
-		/*ClientSockPlanner csp = new ClientSockPlanner();
-		try {
-			System.out.println(csp.bfr.readLine());
-			Delay.msDelay(3000);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
 	}
 	
 	public static void testFollowLine(TouchSensor tSensor){
@@ -106,9 +97,12 @@ public class Main {
     }
 	
 	
-	
-	public static void testCouleur(){
-		Couleur c=new Couleur(0);
+	/**
+	*Vérification du bon calibrage des couleurs
+	*@param: paramètre du constructeur de la classe couleur
+	*/
+	public static void testCouleur(int param){
+		Couleur c=new Couleur(param);
 		System.out.println("Press enter to test blue...");
 		Button.ENTER.waitForPressAndRelease();
 		if(c.isBlue()){
@@ -160,6 +154,11 @@ public class Main {
 		Delay.msDelay(1000);
 	}
 		
+	/**
+	*Le but était de vérifier les données disponibles via l'odomètrie
+	*On a remarqué que l'orientation pouvait être suivie (avec des approximations)
+	*Au final cette piste a été abandonnée
+	*/
 	public static void testOdometrie(){
 		DifferentialDrive d = new DifferentialDrive(Config.LEFTWHEELPORT, Config.RIGHTWHEELPORT); 
 		OdometryPoseProvider o= new OdometryPoseProvider (d.getpilot());

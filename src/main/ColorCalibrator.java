@@ -18,15 +18,16 @@ import lejos.utility.Delay;
  * Classe utilitaire permettant de g�n�rer un fichier de calibration des couleurs.
  * @author paul.carretero, florent.chastagner
  */
+/**
+* Patia 2018-2019:
+* Partie de vérification de la calibration désactivée pour la démonstration du code
+*/
 public class ColorCalibrator {/*
 	/**
 	 * Lance la calibration des couleurs<br/>
 	 * Devrait etre lance apres chaque changement de luminosite
 	 */
-		/**
-		 * Patia 2018:
-		 * Partie de vérification de la calibration désactivée pour la démonstration du code
-		 */
+		
 	public static void Calibrate() {
 		EV3ColorSensor colorSensor = new EV3ColorSensor(Config.COLORPORT);
 		SampleProvider average = new MeanFilter(colorSensor.getRGBMode(), 1);

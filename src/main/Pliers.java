@@ -4,6 +4,9 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.robotics.RegulatedMotor;
 
 /**
+* Code fourni :patia2016blr-master
+*/
+/**
  * Pliers can close and open.
  */
 class Pliers {
